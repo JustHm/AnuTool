@@ -8,42 +8,70 @@ import org.jsoup.select.Elements;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 
 public class MenuCrawling implements Runnable {
-    String url = "https://dorm.andong.ac.kr/2019//food_menu/food_menu.htm?";
+    String url = "https://dorm.andong.ac.kr/2019/food_menu/food_menu.htm?";
     private Document docs;
-    private Connection.Response response;
 
     @Override
     public void run() {
         try {
-            getSiteDocs();
-        } catch (IOException e) {
+            setSSL(); // SSL 우회 설정
+            getSiteDocs(); // 사이트 html 불러오기
+        } catch (IOException | NoSuchAlgorithmException | KeyManagementException e) {
             e.printStackTrace();
         }
     }
-//    String webSite ="";
-//    Document doc = Jsoup.parse(webSite);
 
     private void getSiteDocs() throws IOException {
-
         docs = Jsoup.connect(url)
                 .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.21 (KHTML, like Gecko) Chrome/19.0.1042.0 Safari/535.21")
                 .timeout(3000)
                 .get();
+    }
 
-        int statusCode = response.statusCode();
+    protected void setSSL() throws NoSuchAlgorithmException, KeyManagementException {
+        TrustManager[] trustAllCert = new TrustManager[]{
+                new X509TrustManager() {
+                    @Override
+                    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                    }
+
+                    @Override
+                    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                    }
+
+                    public X509Certificate[] getAcceptedIssuers() {
+                        return null;
+                    }
+
+                }
+        };
+        SSLContext sc = SSLContext.getInstance("SSL"); // NoSuchAlgorithmException 필요
+        sc.init(null, trustAllCert, new SecureRandom()); // KeyManagementException 필요
+        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+            @Override
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        });
+        HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 
     }
 
-
-    private void PharseDocs() {
-
-        Elements element = docs.select("div.w3-responsive table tbody tr td");
-
-        //System.out.print(element);
-    }
 
     private String readStream(InputStream is) {
         try {
@@ -60,9 +88,3 @@ public class MenuCrawling implements Runnable {
     }
 }
 
-//class crawling implements Runnable{
-//    @Override
-//    public void run() {
-//
-//    }
-//}
