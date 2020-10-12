@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="icons">
+        <item>@drawable/apple</item>
+        <item>@drawable/apple</item>
+        <item>@drawable/apple</item>
+    </array>
+
+    <string-array name="iconTitle">
+        <item>"식단표"</item>
+        <item>"외박신청"</item>
+        <item>"식당"</item>
+    </string-array>
+
+    <array name="lay_out">
+
+
+    </array>
+
+</resources>
