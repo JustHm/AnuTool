@@ -26,7 +26,7 @@ import javax.net.ssl.X509TrustManager;
 public class MenuCrawling implements Runnable {
     String url = "https://dorm.andong.ac.kr/2019/food_menu/food_menu.htm?";
     private Document docs;
-
+    private ArrayList<MenuItem> weekMenu = new ArrayList<>();
     @Override
     public void run() {
         try {
@@ -46,14 +46,31 @@ public class MenuCrawling implements Runnable {
     }
 
     private void htmlParser(){
-        Elements elements = docs.select("tbody").get(1).select("tr");;
+        Elements elements = docs.select("tbody").get(1).select("tr");
         ArrayList<String> strings = new ArrayList<>();
-        for(int i = 0; i < elements.size(); i ++)
+        String[] mealTemp = new String[3]; // 아침 점심 저녁
+        int Looptemp = 0;
+        for(int i = 0; i < elements.size()/3; i ++)
         {
+            MenuItem temp = new MenuItem();
+            //meal 시간대별로 string값 넣어주기
+            //아침
+            temp.setMealTime(0, elements.get(Looptemp++).text().split(" ",3)[2]);
+            //점심
+            if(elements.get(Looptemp).text().split(" ").length > 1)
+                temp.setMealTime(1, elements.get(Looptemp++).text().split(" ",2)[1]); // 잘랐을때 1보다 크면 메뉴 불러오기
+            else {temp.setMealTime(1,"없음"); Looptemp++;}
+            //저녁
+            temp.setMealTime(2, elements.get(Looptemp++).text().split(" ",2)[1]);
 
+
+            weekMenu.add(temp);
         }
 
     }
+
+
+
 
     protected void setSSL() throws NoSuchAlgorithmException, KeyManagementException {
         TrustManager[] trustAllCert = new TrustManager[]{
@@ -82,21 +99,6 @@ public class MenuCrawling implements Runnable {
         });
         HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
 
-    }
-
-
-    private String readStream(InputStream is) {
-        try {
-            ByteArrayOutputStream bo = new ByteArrayOutputStream();
-            int i = is.read();
-            while (i != -1) {
-                bo.write(i);
-                i = is.read();
-            }
-            return bo.toString();
-        } catch (IOException e) {
-            return "";
-        }
     }
 }
 
