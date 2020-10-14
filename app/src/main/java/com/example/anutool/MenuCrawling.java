@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -31,6 +32,7 @@ public class MenuCrawling implements Runnable {
         try {
             setSSL(); // SSL 우회 설정
             getSiteDocs(); // 사이트 html 불러오기
+            htmlParser();
         } catch (IOException | NoSuchAlgorithmException | KeyManagementException e) {
             e.printStackTrace();
         }
@@ -41,6 +43,16 @@ public class MenuCrawling implements Runnable {
                 .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.21 (KHTML, like Gecko) Chrome/19.0.1042.0 Safari/535.21")
                 .timeout(3000)
                 .get();
+    }
+
+    private void htmlParser(){
+        Elements elements = docs.select("tbody").get(1).select("tr");;
+        ArrayList<String> strings = new ArrayList<>();
+        for(int i = 0; i < elements.size(); i ++)
+        {
+
+        }
+
     }
 
     protected void setSSL() throws NoSuchAlgorithmException, KeyManagementException {
