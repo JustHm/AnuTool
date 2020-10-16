@@ -1,5 +1,9 @@
 package com.example.anutool;
 
+import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -21,13 +25,15 @@ import javax.net.ssl.X509TrustManager;
 
 
 public class MenuCrawling implements Runnable {
-    String url = "https://dorm.andong.ac.kr/2019/food_menu/food_menu.htm?";
+    private Handler handler;
     private Document docs;
-    private ArrayList<MenuItem> weekMenu = new ArrayList<>(); // 일주일 치 메뉴
+    //private ArrayList<MenuItem> weekMenu = new ArrayList<>(); // 일주일 치 메뉴
+    private MenuItem dayMenu = new MenuItem();
     int weekIndex = 1;
 
-    public MenuCrawling(int weekNum) {
-        weekIndex = weekNum;
+    public MenuCrawling(int weekIndex, Handler handler) {
+        this.weekIndex = weekIndex;
+        this.handler = handler;
     }
 
     @Override
@@ -36,13 +42,18 @@ public class MenuCrawling implements Runnable {
             setSSL(); // SSL 우회 설정
             getSiteDocs(); // 사이트 html 불러오기
             htmlParser();
-
+            Message msg = new Message();
+            msg.what = 0;
+            msg.arg1 = dayMenu.getMealTime().length;
+            msg.obj = (Object) dayMenu.getMealTime();
+            handler.sendMessage(msg);
         } catch (IOException | NoSuchAlgorithmException | KeyManagementException e) {
             e.printStackTrace();
         }
     }
 
     private void getSiteDocs() throws IOException {
+        String url = "https://dorm.andong.ac.kr/2019/food_menu/food_menu.htm?";
         docs = Jsoup.connect(url)
                 .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.21 (KHTML, like Gecko) Chrome/19.0.1042.0 Safari/535.21")
                 .timeout(3000)
@@ -69,7 +80,7 @@ public class MenuCrawling implements Runnable {
         //저녁
         temp.setMealTime(2, elements.get(Looptemp++).text().split(" ", 2)[1]);
 
-        weekMenu.add(temp);
+        dayMenu = temp;
     }
 
     protected void setSSL() throws NoSuchAlgorithmException, KeyManagementException {
@@ -101,7 +112,6 @@ public class MenuCrawling implements Runnable {
 
     }
 
-    public MenuItem getWeekMenu(int index) {return weekMenu.get(index);}
-    public int getSize(){ return weekMenu.size();}
+
 }
 
