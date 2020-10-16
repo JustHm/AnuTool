@@ -81,7 +81,6 @@ public class MenuCrawling implements Runnable {
         temp.setMealTime(2, elements.get(Looptemp++).text().split(" ", 2)[1]);
 
         dayMenu = temp;
-        docs.remove();
     }
 
     protected void setSSL() throws NoSuchAlgorithmException, KeyManagementException {
