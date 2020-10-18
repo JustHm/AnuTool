@@ -79,7 +79,7 @@ public class MenuCrawling implements Runnable {
         }
         //저녁
         temp.setMealTime(2, elements.get(Looptemp++).text().split(" ", 2)[1]);
-
+        temp.sliceString();
         dayMenu = temp;
     }
 
