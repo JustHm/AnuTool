@@ -1,4 +1,4 @@
-package com.example.anutool;
+package com.anu.anutool;
 
 import android.content.Context;
 

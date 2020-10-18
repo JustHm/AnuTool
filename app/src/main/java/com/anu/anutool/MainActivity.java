@@ -1,4 +1,4 @@
-package com.example.anutool;
+package com.anu.anutool;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -18,8 +18,6 @@ import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 import java.util.GregorianCalendar;
-
-import static androidx.core.content.ContextCompat.getSystemService;
 
 public class MainActivity extends AppCompatActivity {
     private RadioGroup timeGroup;

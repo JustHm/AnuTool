@@ -1,4 +1,4 @@
-package com.example.anutool;
+package com.anu.anutool;
 
 public class MenuItem {
     private String[] mealTime = new String[3];
