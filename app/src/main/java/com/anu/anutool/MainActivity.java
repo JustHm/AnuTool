@@ -76,9 +76,13 @@ public class MainActivity extends AppCompatActivity {
         timeGroup = (RadioGroup) findViewById(R.id.timeGroup);
         menuView = (TextView) findViewById(R.id.menu);
         dateView = (TextView) findViewById(R.id.date);
-        InternetStateCheck();
 
         dateView.setText(String.format("%s월 %d일", day.get(GregorianCalendar.MONTH) + 1, day.get(GregorianCalendar.DATE)));
+
+
+        ConnectivityManager checkInternet = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(checkInternet==null) AlertShow();
+        else if (!checkInternet.isDefaultNetworkActive()) AlertShow();
 
         MenuCrawling menuCrawling;
         if (day.get(GregorianCalendar.DAY_OF_WEEK) == 1) {
@@ -90,27 +94,18 @@ public class MainActivity extends AppCompatActivity {
         crawlingThread.start();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void InternetStateCheck() {
-        boolean result = false;
-
-        ConnectivityManager checkInternet = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkCapabilities capabilities = checkInternet.getNetworkCapabilities(checkInternet.getActiveNetwork());
-        result = !checkInternet.isActiveNetworkMetered();
-        if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) result = false;
-        if (result) {
-            new AlertDialog.Builder(this)
-                    .setCancelable(false)
-                    .setMessage("인터넷 연결 필요")
-                    .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            moveTaskToBack(true);                        // 태스크를 백그라운드로 이동
-                            finishAndRemoveTask();                        // 액티비티 종료 + 태스크 리스트에서 지우기
-                            android.os.Process.killProcess(android.os.Process.myPid());
-                        }
-                    }).show();
-        }
+    private void AlertShow() {
+        new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setMessage("인터넷 연결 필요")
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        moveTaskToBack(true);                        // 태스크를 백그라운드로 이동
+                        finishAndRemoveTask();                        // 액티비티 종료 + 태스크 리스트에서 지우기
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                    }
+                }).show();
     }
 };
 
