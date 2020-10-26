@@ -1,4 +1,4 @@
-package com.anu.anutool;
+package com.anumeal.anutool;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -8,7 +8,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
-import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -79,10 +79,9 @@ public class MainActivity extends AppCompatActivity {
 
         dateView.setText(String.format("%s월 %d일", day.get(GregorianCalendar.MONTH) + 1, day.get(GregorianCalendar.DATE)));
 
-
-        ConnectivityManager checkInternet = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if(checkInternet==null) AlertShow();
-        else if (!checkInternet.isDefaultNetworkActive()) AlertShow();
+        if (getOnline() == 0) {
+            menuView.setText("인터넷을 연결 후 실행 해주세요.");
+        }
 
         MenuCrawling menuCrawling;
         if (day.get(GregorianCalendar.DAY_OF_WEEK) == 1) {
@@ -94,18 +93,29 @@ public class MainActivity extends AppCompatActivity {
         crawlingThread.start();
     }
 
-    private void AlertShow() {
-        new AlertDialog.Builder(this)
-                .setCancelable(false)
-                .setMessage("인터넷 연결 필요")
-                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        moveTaskToBack(true);                        // 태스크를 백그라운드로 이동
-                        finishAndRemoveTask();                        // 액티비티 종료 + 태스크 리스트에서 지우기
-                        android.os.Process.killProcess(android.os.Process.myPid());
-                    }
-                }).show();
+    public int getOnline() {
+        int ret_code = 0;
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null) {
+            if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI && activeNetwork.isConnectedOrConnecting()) {
+                // wifi 연결중
+                return 1;
+            } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE && activeNetwork.isConnectedOrConnecting()) {
+                // 모바일 네트워크 연결중
+                return 2;
+            } else {
+                // 네트워크 오프라인 상태.
+                return 0;
+            }
+        } else {
+            //네트워크 없는 상태
+            return 0;
+        }
     }
+
+
+    //출처: https://ariarihan.tistory.com/21 [아리아리한]
 };
 

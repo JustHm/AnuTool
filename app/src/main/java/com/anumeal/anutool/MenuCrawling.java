@@ -1,4 +1,4 @@
-package com.anu.anutool;
+package com.anumeal.anutool;
 
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +9,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
+import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
@@ -26,7 +27,6 @@ import javax.net.ssl.X509TrustManager;
 public class MenuCrawling implements Runnable {
     private Handler handler;
     private Document docs;
-    //private ArrayList<MenuItem> weekMenu = new ArrayList<>(); // 일주일 치 메뉴
     private MenuItem dayMenu = new MenuItem();
     int weekIndex = 1;
 
@@ -46,14 +46,14 @@ public class MenuCrawling implements Runnable {
             msg.arg1 = dayMenu.getMealTime().length;
             msg.obj = (Object) dayMenu.getMealTime();
             handler.sendMessage(msg);
-        } catch (IOException | NoSuchAlgorithmException | KeyManagementException e) {
+        }
+         catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
     }
 
     private void getSiteDocs() throws IOException {
-        String url = "https://dorm.andong.ac.kr/2019/food_menu/food_menu.htm?";
-        docs = Jsoup.connect(url)
+        docs = Jsoup.connect("https://dorm.andong.ac.kr/2019/food_menu/food_menu.htm?")
                 .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.21 (KHTML, like Gecko) Chrome/19.0.1042.0 Safari/535.21")
                 .timeout(3000)
                 .get();
@@ -82,7 +82,8 @@ public class MenuCrawling implements Runnable {
         dayMenu = temp;
     }
 
-    protected void setSSL() throws NoSuchAlgorithmException, KeyManagementException {
+    protected void setSSL() throws NoSuchAlgorithmException, KeyManagementException, CertificateException, IOException, KeyStoreException {
+
         TrustManager[] trustAllCert = new TrustManager[]{
                 new X509TrustManager() {
                     @Override

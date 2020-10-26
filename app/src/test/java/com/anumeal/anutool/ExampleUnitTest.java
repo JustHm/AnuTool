@@ -1,4 +1,4 @@
-package com.anu.anutool;
+package com.anumeal.anutool;
 
 import org.junit.Test;
 
