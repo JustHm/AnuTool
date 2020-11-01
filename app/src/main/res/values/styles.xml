@@ -8,6 +8,15 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="LocationTab" parent="Theme.AppCompat.Light.DarkActionBar">
+<!--        <item name="colorPrimary">@color/colorPrimary</item>--> <!--배경-->
+
+        <item name="android:textColorPrimary">@color/black</item> <!--선택됐을때-->
+        <item name="android:textColorSecondary">@color/gray</item> <!--기본-->
+
+        <item name="colorAccent">@color/colorAccent</item> <!--하단 슬라이드 바-->
+    </style>
+
 <!--    <style name="MenuTextView" parent="Widget.AppCompat.TextView">-->
 <!--        <item name="android:layout_width">match_parent</item>-->
 <!--        <item name="android:layout_height">match_parent</item>-->
