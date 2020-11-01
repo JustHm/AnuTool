@@ -14,7 +14,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -26,8 +25,9 @@ import javax.net.ssl.X509TrustManager;
 
 public class MenuCrawling implements Runnable {
     private Handler handler;
-    private Document docs;
+    private Document docs, Cafeteriadocs;
     private MenuItem dayMenu = new MenuItem();
+    private MenuItem cafeteria = new MenuItem();
     int weekIndex = 1;
 
     public MenuCrawling(int weekIndex, Handler handler) {
@@ -43,43 +43,52 @@ public class MenuCrawling implements Runnable {
             htmlParser();
             Message msg = new Message();
             msg.what = 0;
-            msg.arg1 = dayMenu.getMealTime().length;
+            msg.arg1 = dayMenu.getMealTime().size();
             msg.obj = (Object) dayMenu.getMealTime();
             handler.sendMessage(msg);
-        }
-         catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
+        } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
             e.printStackTrace();
         }
     }
 
-    private void getSiteDocs() throws IOException {
+    private void getSiteDocs() throws IOException { //http://www.andong.ac.kr/main/module/foodMenu/index.do?menu_idx=82
         docs = Jsoup.connect("https://dorm.andong.ac.kr/2019/food_menu/food_menu.htm?")
+                .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.21 (KHTML, like Gecko) Chrome/19.0.1042.0 Safari/535.21")
+                .timeout(3000)
+                .get();
+        Cafeteriadocs = Jsoup.connect("http://www.andong.ac.kr/main/module/foodMenu/index.do?menu_idx=82")
                 .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.21 (KHTML, like Gecko) Chrome/19.0.1042.0 Safari/535.21")
                 .timeout(3000)
                 .get();
     }
 
+
     private void htmlParser() {
         Elements elements = docs.select("tbody").get(1).select("tr");
-        ArrayList<String> strings = new ArrayList<>();
-        String[] mealTemp = new String[3]; // 아침 점심 저녁
+        Elements elements1 = Cafeteriadocs.select(".cont").select("dd");
         int Looptemp = weekIndex * 3;
-
+        int loopLimit = 0;
         MenuItem temp = new MenuItem();
-        //meal 시간대별로 string값 넣어주기
-        //아침
-        temp.setMealTime(0, elements.get(Looptemp++).text().split(" ", 3)[2]);
-        //점심
-        if (elements.get(Looptemp).text().split(" ").length > 1)
-            temp.setMealTime(1, elements.get(Looptemp++).text().split(" ", 2)[1]); // 잘랐을때 1보다 크면 메뉴 불러오기
-        else {
-            temp.setMealTime(1, "없음");
-            Looptemp++;
+        // dorm parser
+        if (weekIndex == 6) loopLimit = 0;
+        else loopLimit = 1;
+
+        for (int i = 0; i <= loopLimit; i++) {
+            temp.setMealTime(elements.get(Looptemp++).text().split(" ", 3)[2]);
+            if (elements.get(Looptemp).text().split(" ").length > 1)
+                temp.setMealTime(elements.get(Looptemp++).text().split(" ", 2)[1]);
+            else {
+                temp.setMealTime("없음");
+                Looptemp++;
+            }
+            temp.setMealTime(elements.get(Looptemp++).text().split(" ", 2)[1]);
         }
-        //저녁
-        temp.setMealTime(2, elements.get(Looptemp++).text().split(" ", 2)[1]);
+        //cafeteria parser
+        if(elements1.size() == 0) cafeteria.setMealTime("없음");
+
         temp.sliceString();
         dayMenu = temp;
+
     }
 
     protected void setSSL() throws NoSuchAlgorithmException, KeyManagementException, CertificateException, IOException, KeyStoreException {
