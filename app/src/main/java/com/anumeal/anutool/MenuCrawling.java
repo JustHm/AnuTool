@@ -37,16 +37,18 @@ public class MenuCrawling implements Runnable {
 
     @Override
     public void run() {
+        Message msg = new Message();
         try {
             setSSL(); // SSL 우회 설정
             getSiteDocs(); // 사이트 html 불러오기
             htmlParser();
-            Message msg = new Message();
             msg.what = 0;
             msg.arg1 = dayMenu.getMealTime().size();
             msg.obj = (Object) dayMenu.getMealTime();
             handler.sendMessage(msg);
         } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException | KeyManagementException e) {
+            msg.what = 1;
+            handler.sendMessage(msg);
             e.printStackTrace();
         }
     }
@@ -56,16 +58,17 @@ public class MenuCrawling implements Runnable {
                 .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.21 (KHTML, like Gecko) Chrome/19.0.1042.0 Safari/535.21")
                 .timeout(3000)
                 .get();
-        Cafeteriadocs = Jsoup.connect("http://www.andong.ac.kr/main/module/foodMenu/index.do?menu_idx=82")
-                .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.21 (KHTML, like Gecko) Chrome/19.0.1042.0 Safari/535.21")
-                .timeout(3000)
-                .get();
+//        Cafeteriadocs = Jsoup.connect("http://www.andong.ac.kr/main/module/foodMenu/index.do?menu_idx=82")
+//                .userAgent("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.21 (KHTML, like Gecko) Chrome/19.0.1042.0 Safari/535.21")
+//                .timeout(3000)
+//                .get();
+//        Elements elements1 = Cafeteriadocs.select(".cont").select("dd");
     }
 
 
     private void htmlParser() {
         Elements elements = docs.select("tbody").get(1).select("tr");
-        Elements elements1 = Cafeteriadocs.select(".cont").select("dd");
+
         int Looptemp = weekIndex * 3;
         int loopLimit = 0;
         MenuItem temp = new MenuItem();
@@ -83,12 +86,8 @@ public class MenuCrawling implements Runnable {
             }
             temp.setMealTime(elements.get(Looptemp++).text().split(" ", 2)[1]);
         }
-        //cafeteria parser
-        if(elements1.size() == 0) cafeteria.setMealTime("없음");
-
         temp.sliceString();
         dayMenu = temp;
-
     }
 
     protected void setSSL() throws NoSuchAlgorithmException, KeyManagementException, CertificateException, IOException, KeyStoreException {

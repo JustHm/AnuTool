@@ -91,34 +91,34 @@
 
 <!--    </com.google.android.material.appbar.AppBarLayout>-->
 
-    <RadioGroup
-        android:id="@+id/locationGroup"
-        android:visibility="invisible"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timeGroup">
+<!--    <RadioGroup-->
+<!--        android:id="@+id/locationGroup"-->
+<!--        android:visibility="invisible"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_weight="4"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/timeGroup">-->
 
-        <RadioButton
-            android:id="@+id/dorm"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="기숙사" />
+<!--        <RadioButton-->
+<!--            android:id="@+id/dorm"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:checked="true"-->
+<!--            android:text="기숙사" />-->
 
-        <RadioButton
-            android:id="@+id/cafeteria"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:text="학생식당" />
+<!--        <RadioButton-->
+<!--            android:id="@+id/cafeteria"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="학생식당" />-->
 
-    </RadioGroup>
+<!--    </RadioGroup>-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -127,7 +127,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locationGroup">
+        app:layout_constraintTop_toBottomOf="@+id/timeGroup">
 
 
         <androidx.recyclerview.widget.RecyclerView
