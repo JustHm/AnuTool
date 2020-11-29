@@ -9,7 +9,7 @@
     </style>
 
     <style name="LocationTab" parent="Theme.AppCompat.Light.DarkActionBar">
-<!--        <item name="colorPrimary">@color/colorPrimary</item>--> <!--배경-->
+        <!--        <item name="colorPrimary">@color/colorPrimary</item>--> <!--배경-->
 
         <item name="android:textColorPrimary">@color/black</item> <!--선택됐을때-->
         <item name="android:textColorSecondary">@color/gray</item> <!--기본-->
@@ -17,14 +17,23 @@
         <item name="colorAccent">@color/colorAccent</item> <!--하단 슬라이드 바-->
     </style>
 
-<!--    <style name="MenuTextView" parent="Widget.AppCompat.TextView">-->
-<!--        <item name="android:layout_width">match_parent</item>-->
-<!--        <item name="android:layout_height">match_parent</item>-->
-<!--        <item name="android:layout_weight">1</item>-->
-<!--        <item name="android:padding">10dp</item>-->
-<!--        <item name="android:textAlignment">center</item>-->
-<!--        <item name="android:gravity">center_horizontal</item>-->
-<!--        <item name="android:textSize">10sp</item>-->
-<!--    </style>-->
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!--    <style name="MenuTextView" parent="Widget.AppCompat.TextView">-->
+    <!--        <item name="android:layout_width">match_parent</item>-->
+    <!--        <item name="android:layout_height">match_parent</item>-->
+    <!--        <item name="android:layout_weight">1</item>-->
+    <!--        <item name="android:padding">10dp</item>-->
+    <!--        <item name="android:textAlignment">center</item>-->
+    <!--        <item name="android:gravity">center_horizontal</item>-->
+    <!--        <item name="android:textSize">10sp</item>-->
+    <!--    </style>-->
 
 </resources>
