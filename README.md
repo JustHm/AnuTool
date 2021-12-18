@@ -1,7 +1,12 @@
 # AnuTool
 
-## Desc
-  안동대 편의기능 어플
-  1. 기숙사 식단표
+## 기능
+  기숙사 식단표를 보여주는 어플
+
+## 개발환경
+- AndroidStudio
+
+## 사용 라이브러리
+- [Jsoup](https://jsoup.org)
   
   
