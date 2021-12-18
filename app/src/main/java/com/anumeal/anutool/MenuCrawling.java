@@ -102,41 +102,7 @@ public class MenuCrawling implements Runnable {
 
     protected void setSSL() throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException, CertificateException {
         String certString = "-----BEGIN CERTIFICATE-----\n" +
-                "MIIGujCCBaKgAwIBAgIQDtFHxDKMIFM/ilfD8tykcTANBgkqhkiG9w0BAQsFADBc\n" +
-                "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n" +
-                "d3cuZGlnaWNlcnQuY29tMRswGQYDVQQDExJUaGF3dGUgUlNBIENBIDIwMTgwHhcN\n" +
-                "MjAwNDI3MDAwMDAwWhcNMjIwNDI3MTIwMDAwWjCBjjELMAkGA1UEBhMCS1IxGTAX\n" +
-                "BgNVBAgTEEd5ZW9uZ3NhbmdidWstZG8xEjAQBgNVBAcTCUFuZG9uZy1zaTEjMCEG\n" +
-                "A1UEChMaQW5kb25nIE5hdGlvbmFsIFVuaXZlcnNpdHkxEDAOBgNVBAsTB0lUIFRl\n" +
-                "YW0xGTAXBgNVBAMTEHd3dy5hbmRvbmcuYWMua3IwggEiMA0GCSqGSIb3DQEBAQUA\n" +
-                "A4IBDwAwggEKAoIBAQDUmCb500/7L/EjW/03t0IxVgXxHKSEW6njUfJocGhmdOoD\n" +
-                "RaXsIOaPFaS3HOYnrEzF3YsaHcKyY+Y8FUVrAKgZqwaosHixx2cDP8NEFoJWob1e\n" +
-                "/3VqvmUpz4n+5YR+0WTuOwbHA4eFjRxc/c3ZmYXDXb95OTmCv2otUTrDcTtJVWuO\n" +
-                "L6c/3jPFe5WolD1PvWShkgdDm5bT/Y+nb53gWAKefn5C+CaELUyRjNy8Z7YTgyQn\n" +
-                "c2DWZwaozmEkuZtz8iXZea/POeozXKTur/OBzoQJky6K9ZlOVvzlgbT/IksamL9K\n" +
-                "YyDmSvklzDi5MHhk9ZbNyRMhnH+aLDILgQVhr6q1AgMBAAGjggNDMIIDPzAfBgNV\n" +
-                "HSMEGDAWgBSjyF5lVOUweMEF6gcKalnMuf7eWjAdBgNVHQ4EFgQUL5E0PSC93MHn\n" +
-                "4lGGcWlR4ufOUSkwRgYDVR0RBD8wPYIQd3d3LmFuZG9uZy5hYy5rcoIMYW5kb25n\n" +
-                "LmFjLmtyggsqLmFudS5hYy5rcoIOKi5hbmRvbmcuYWMua3IwDgYDVR0PAQH/BAQD\n" +
-                "AgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjA6BgNVHR8EMzAxMC+g\n" +
-                "LaArhilodHRwOi8vY2RwLnRoYXd0ZS5jb20vVGhhd3RlUlNBQ0EyMDE4LmNybDBM\n" +
-                "BgNVHSAERTBDMDcGCWCGSAGG/WwBATAqMCgGCCsGAQUFBwIBFhxodHRwczovL3d3\n" +
-                "dy5kaWdpY2VydC5jb20vQ1BTMAgGBmeBDAECAjBvBggrBgEFBQcBAQRjMGEwJAYI\n" +
-                "KwYBBQUHMAGGGGh0dHA6Ly9zdGF0dXMudGhhd3RlLmNvbTA5BggrBgEFBQcwAoYt\n" +
-                "aHR0cDovL2NhY2VydHMudGhhd3RlLmNvbS9UaGF3dGVSU0FDQTIwMTguY3J0MAkG\n" +
-                "A1UdEwQCMAAwggF+BgorBgEEAdZ5AgQCBIIBbgSCAWoBaAB2ACl5vvCeOTkh8FZz\n" +
-                "n2Old+W+V32cYAr4+U1dJlwlXceEAAABcbmAt8EAAAQDAEcwRQIhAOTFbTrtAZhP\n" +
-                "eQX9fLFvETGV4+YZ/2f5qSd+fM6Dm94MAiBnbkY5Sr2Y4Ec5/QQEhTC8HbDiH6mg\n" +
-                "F8X4ece1gi+bhQB3AEHIyrHfIkZKEMahOglCh15OMYsbA+vrS8do8JBilgb2AAAB\n" +
-                "cbmAt4IAAAQDAEgwRgIhAKnbPoCh8iFaAEAOtDYA1JdLSoHvasi5ychyGS3BlS97\n" +
-                "AiEAsuzRRNL9avfzf2VK4k/lA5Eul/tCAV/mCciPdcDAdecAdQCHdb/nWXz4jEOZ\n" +
-                "X73zbv9WjUdWNv9KtWDBtOr/XqCDDwAAAXG5gLhtAAAEAwBGMEQCIEG5sv+Iwf2R\n" +
-                "nE6PX9SEzre4Lxqmg0jET0cmPLC17V+RAiAO9KDQrkt+JHEQSzSQuR/pInIwJzRD\n" +
-                "3ScWc1UKiBhaszANBgkqhkiG9w0BAQsFAAOCAQEANa4CnFyvRjMotusdGTGHtuUf\n" +
-                "ryWeKoDsmlPR6yd6XdjmzPux+12DBJdg67NjAx7pXGR1B64lBDdcpYQ9U6WwWGU7\n" +
-                "0Res1c5spZsXmY328e5yma1D/wZ4IJhDWQT37Xi3yNtDGaKBvKF0LiDZOke0PWmD\n" +
-                "t797dhgzq5oESUIQOFe9zsUt1ofexls0AuYNz99mq2O0aDCXhZx7qgCxt2b5s8TA\n" +
-                "nIBEOf8T2DAg5Odniv6tmHUSyBIdN5p+n0KfirQidT7C7SO/f+JVKxLfRtXr/eFd\n" +
+                "..."+
                 "8jSSr8Btw8bUh15ok2A4FVR1m8s+eHMYNFS+yAkO75jArPZMk9Mz1kEo5wmhUA==\n" +
                 "-----END CERTIFICATE-----";
 // Load CAs from an InputStream
